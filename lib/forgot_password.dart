@@ -115,7 +115,7 @@ class _ScreenTwoPageState extends State<ScreenTwoPage> {
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: "Password",
+                      hintText: "Confirm Password",
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.teal),
                         borderRadius: BorderRadius.circular(30),
