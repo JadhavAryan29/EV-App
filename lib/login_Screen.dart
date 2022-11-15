@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
+
+
 
 import 'package:ev_app/map_screen.dart';
 import 'package:ev_app/register_screen.dart';
 import 'package:ev_app/forgot_password.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ScreenOnePage extends StatefulWidget {
@@ -13,6 +16,8 @@ class ScreenOnePage extends StatefulWidget {
 }
 
 class _ScreenOnePageState extends State<ScreenOnePage> {
+  late String _email, _password;
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,12 +80,13 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                   height: 30,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   child: TextField(
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: "Username",
+                      hintText: "Email",
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.teal),
                         borderRadius: BorderRadius.circular(30),
@@ -91,6 +97,11 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                       ),
                     ),
                     maxLines: 1,
+                    onChanged: ((value) {
+                      setState(() {
+                        _email=value.trim();
+                      });
+                    }),
                   ),
                 ),
                 Padding(
@@ -111,6 +122,11 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                       ),
                     ),
                     maxLines: 1,
+                    onChanged: (value) {
+                      setState(() {
+                        _password=value.trim();
+                      });
+                    },
                     //  maxLength: 12,
                   ),
                 ),
@@ -124,7 +140,12 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                           fontWeight: FontWeight.w500,
                           fontSize: 18),
                     ),
-                    onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenTwoPage() ),);},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => ScreenTwoPage()),
+                      );
+                    },
                   ),
                 ),
                 Padding(
@@ -135,7 +156,17 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                     color: Colors.teal[300],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenFourPage() ),);},
+                    onPressed: () async {
+                      var credential = await auth.signInWithEmailAndPassword(
+                          email: _email, password: _password);
+                      if (credential.user != null)
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => ScreenFourPage(),
+                          ),
+                        );
+                    },
                     child: Text(
                       "Log In",
                       style: TextStyle(
@@ -146,7 +177,9 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 GestureDetector(
                   child: Text(
                     "New user? Register Now",
@@ -155,7 +188,12 @@ class _ScreenOnePageState extends State<ScreenOnePage> {
                         fontWeight: FontWeight.w500,
                         fontSize: 18),
                   ),
-                  onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenThreePage() ),);},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => ScreenThreePage()),
+                    );
+                  },
                 ),
               ],
             ),

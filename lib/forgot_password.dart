@@ -108,7 +108,7 @@ class _ScreenTwoPageState extends State<ScreenTwoPage> {
                     //  maxLength: 12,
                   ),
                 ),
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
                   child: TextField(
                     obscureText: true,
@@ -129,7 +129,6 @@ class _ScreenTwoPageState extends State<ScreenTwoPage> {
                     //  maxLength: 12,
                   ),
                 ),
-              
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 40, left: 40),
                   child: MaterialButton(
@@ -140,7 +139,8 @@ class _ScreenTwoPageState extends State<ScreenTwoPage> {
                         borderRadius: BorderRadius.circular(30)),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ScreenOnePage()),
+                        MaterialPageRoute(
+                            builder: (context) => ScreenOnePage()),
                       );
                     },
                     child: Text(

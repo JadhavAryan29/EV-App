@@ -175,7 +175,8 @@ class _ScreenThreePageState extends State<ScreenThreePage> {
                         borderRadius: BorderRadius.circular(30)),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ScreenFourPage()),
+                        MaterialPageRoute(
+                            builder: (context) => ScreenFourPage()),
                       );
                     },
                     child: Text(
