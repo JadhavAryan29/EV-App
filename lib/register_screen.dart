@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:ev_app/login_Screen.dart';
 import 'package:ev_app/map_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ScreenThreePage extends StatefulWidget {
@@ -11,6 +13,8 @@ class ScreenThreePage extends StatefulWidget {
 }
 
 class _ScreenThreePageState extends State<ScreenThreePage> {
+  late String _email, _password;
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +94,30 @@ class _ScreenThreePageState extends State<ScreenThreePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: TextField(
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: "Email Id",
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.teal),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.teal),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    maxLines: 1,
+                    onChanged: (value) {
+                      setState(() {
+                        _email = value.trim();
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                  child: TextField(
                     obscureText: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
@@ -105,26 +133,12 @@ class _ScreenThreePageState extends State<ScreenThreePage> {
                       ),
                     ),
                     maxLines: 1,
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value.trim();
+                      });
+                    },
                     //  maxLength: 12,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: "Email",
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.teal),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.teal),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    maxLines: 1,
                   ),
                 ),
                 Padding(
@@ -173,11 +187,17 @@ class _ScreenThreePageState extends State<ScreenThreePage> {
                     color: Colors.teal[300],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => ScreenFourPage()),
-                      );
+                    onPressed: () async {
+                      var credential =
+                          await auth.createUserWithEmailAndPassword(
+                              email: _email, password: _password);
+                      if (credential.user != null)
+                        // ignore: curly_braces_in_flow_control_structures
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => ScreenOnePage(),
+                          ),
+                        );
                     },
                     child: Text(
                       "REGISTER",
@@ -188,6 +208,23 @@ class _ScreenThreePageState extends State<ScreenThreePage> {
                       textScaleFactor: 1,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  child: Text(
+                    "Already have an account ? Log In",
+                    style: TextStyle(
+                        color: Colors.teal,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ScreenOnePage()),
+                    );
+                  },
                 ),
               ],
             ),

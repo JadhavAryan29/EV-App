@@ -3,7 +3,8 @@
    <application
         android:label="Ev App"
         android:name="${applicationName}"
-        android:icon="@mipmap/charge">
+        android:icon="@mipmap/charge"
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"
